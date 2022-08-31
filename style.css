@@ -59,7 +59,7 @@ th, td, tr{
 
 .delete a{
 	color: white;
-	background: #ffff;
+	background: red;
 	padding: 1px 6px;
 	border-radius: 3px;
 	text-decoration: none;

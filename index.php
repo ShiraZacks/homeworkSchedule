@@ -2,10 +2,18 @@
     // initialize errors variable
 	$errors = "";
 
-	// connect to database
-	$db = mysqli_connect("localhost", "root", "", "heroku_533aa7adf38e84b");
+//Get Heroku ClearDB connection information
+$cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+$cleardb_server = $cleardb_url["host"];
+$cleardb_username = $cleardb_url["user"];
+$cleardb_password = $cleardb_url["pass"];
+$cleardb_db = substr($cleardb_url["path"],1);
+$active_group = 'default';
+$query_builder = TRUE;
+// Connect to DB
+$conn = mysqli_connect($cleardb_server, $cleardb_username, $cleardb_password, $cleardb_db);
 
-	// insert to db if submit button is clicked
+// insert to db if submit button is clicked
 	if (isset($_POST['submit'])) {
 			if (empty($_POST['task'])) {
 				$errors = "Write the asignment!";
@@ -19,7 +27,7 @@
 					//make it submit
 			$sql = "INSERT INTO tasks (due, task) VALUES ('$due', '$task')";
 
-			mysqli_query($db, $sql);
+			mysqli_query($conn, $sql);
 			header('location: index.php');
 	}
 	};
@@ -28,7 +36,7 @@
 if (isset($_GET['del_task'])) {
 	$id = $_GET['del_task'];
 
-	mysqli_query($db, "DELETE FROM tasks WHERE id=".$id);
+	mysqli_query($conn, "DELETE FROM tasks WHERE id=".$id);
 	header('location: index.php');
 }
 ?>
@@ -65,7 +73,7 @@ if (isset($_GET['del_task'])) {
 	<tbody>
 		<?php 
 		// select all tasks if page is visited or refreshed
-		$tasks = mysqli_query($db, "SELECT * FROM tasks");
+		$tasks = mysqli_query($conn, "SELECT * FROM tasks");
 
 		$i = 1; while ($row = mysqli_fetch_array($tasks)) { ?>
 			<tr>

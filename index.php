@@ -3,7 +3,7 @@
 	$errors = "";
 
 	// connect to database
-	$db = mysqli_connect("localhost", "root", "", "todo");
+	$db = mysqli_connect("localhost", "root", "", "heroku_533aa7adf38e84b");
 
 	// insert to db if submit button is clicked
 	if (isset($_POST['submit'])) {
